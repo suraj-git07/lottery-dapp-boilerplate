@@ -55,16 +55,16 @@ const App = () => {
         <div className="py-1">Tickets remaining: {tickets}</div>
         {/* Action Buttons */}
         {tickets > 0 ? (
-          <button className="btn btn-primary btn-lg">
+          <button onClick={onBuyTicket} className="btn btn-primary btn-lg">
             {/* TODO 7.b - Call onBuyTicket on click */}
             {/* TODO 7.c - Show "loading..." when buying operation is pending */}
-            {loading == true ? "loading..." : "Buy Ticket"}
+            {loading === true ? "loading..." : "Buy Ticket"}
           </button>
         ) : (
           <button onClick={onEndGame} className="btn btn-success btn-lg">
             {/* TODO 11.b - Call onEndGame on click */}
             {/* TODO 11.c - Show "loading..." when buying operation is pending */}
-            {loading == true ? "loading..." : "End game"}
+            {loading === true ? "loading..." : "End game"}
           </button>
         )}
         {/* List of Players */}
