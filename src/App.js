@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 // Components
 import Navbar from "./components/Navbar";
+import { buyTicketOperation, endGameOperation } from "./utils/operation";
+import { fetchStorage } from "./utils/tzkt";
 
 const App = () => {
   // Players holding lottery tickets
@@ -13,16 +15,37 @@ const App = () => {
   useEffect(() => {
     // TODO 9 - Fetch players and tickets remaining from storage
     (async () => {
-      setPlayers([]);
-      setTickets(5);
+      const storage = await fetchStorage();
+      setPlayers(Object.values(storage.players));
+      setTickets(storage.ticket_available);
     })();
   }, []);
 
   // TODO 7.a - Complete onBuyTicket function
-  const onBuyTicket = async () => {};
+  const onBuyTicket = async () => {
+    try {
+      setLoading(true);
+      await buyTicketOperation();
+      alert("transaction confirmed");
+    } catch (error) {
+      alert("transaction confirmed", error.message);
+      throw error;
+    }
+    setLoading(false);
+  };
 
   // TODO 11.a - Complete onEndGame function
-  const onEndGame = async () => {};
+  const onEndGame = async () => {
+    try {
+      setLoading(true);
+      await endGameOperation();
+      alert("transaction confirmed");
+    } catch (error) {
+      alert("transaction confirmed", error.message);
+      throw error;
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="h-100">
@@ -35,13 +58,13 @@ const App = () => {
           <button className="btn btn-primary btn-lg">
             {/* TODO 7.b - Call onBuyTicket on click */}
             {/* TODO 7.c - Show "loading..." when buying operation is pending */}
-            Buy Ticket
+            {loading == true ? "loading..." : "Buy Ticket"}
           </button>
         ) : (
-          <button className="btn btn-success btn-lg">
+          <button onClick={onEndGame} className="btn btn-success btn-lg">
             {/* TODO 11.b - Call onEndGame on click */}
             {/* TODO 11.c - Show "loading..." when buying operation is pending */}
-            End Game
+            {loading == true ? "loading..." : "End game"}
           </button>
         )}
         {/* List of Players */}
